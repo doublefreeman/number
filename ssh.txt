@@ -1,0 +1,3 @@
+git@github.com:doublefreeman/number.git
+https://github.com/doublefreeman/number.git
+https://doublefreeman.github.io/number/
