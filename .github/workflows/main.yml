@@ -40,3 +40,6 @@ jobs:
         with:
           github_token: ${{ secrets.ACC_TOKEN }}
 
+env:
+  TZ: Asia/Shanghai
+
