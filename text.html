@@ -4,7 +4,8 @@
 <head>
 
 <meta charset="utf-8">
-<title>七宝古镇密集人群实时监测</title>
+<title>复制文本
+</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -16,37 +17,22 @@
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
 <style>
-.abc {width: 1024px;height:768px;}
-.datetype{
-    width: 180px;
-    font-size: 5px;
-    margin:50px auto;
-    transform: scale(1.8,1.8);
 
+.datetype{
+    margin-top: 20px;
 }
 .updatetime{
-    width: 250px;
-    font-size: 5px;
-    margin:50px auto;
-    transform: scale(1.8,1.8);
+    margin-top: 20px;
 }
 
 </style>
 </head>
 
-<body style="background-color:#23b299;color:white;font-family:\5FAE\8F6F\96C5\9ED1">
-<div class="abc">
-	<div style="margin-top:15px;margin-bottom:152px;">
-		<h1 ><a style="font-size:40px;text-align:center">七宝古镇客流监测预警系统</a></h1>
-		
-		<table style="width:100%;">
-        	
-            <tr style="margin-top:129px;font-size:60px;"><td style="width:auto;text-align:right">  当前客流量</td><td>:</td><td id="current" style="font-size:100px;text-align: center;">0</td><td>人</td></tr>
-            <tr style="margin-top:114px;font-size:60px"><td style="width:auto;text-align:right"> 人 群 密 度</td><td>:</td><td id="density" style="font-size:100px;text-align: center;">0.0</td><td>人/平方</td></tr>
-            <tr style="margin-top:114px;font-size:60px"><td style="width:auto;text-align:right">今日客流总量</td><td>:</td><td id="today" style="font-size:100px;text-align: center;">0</td><td>人</td></tr>
-           
-        </table>
-                
+<body>
+<div class="abc" id="text-align">
+	<div>
+        <div id="copytext">读取中...</div>
+
         <form  class="datetype" action="#" method="post" onclick="gedatetype()">
             日期类型：
             <input type="radio" name="datetype" value="1" checked="true" id="isOriginalData"/>原始数据<br>
@@ -57,7 +43,7 @@
 
         <div class="updatetime" >
             <span>更新时间：</span>
-            <span id="updatetime">读取中......</span>
+            <span id="updatetime"></span>
 
         </div>
         
@@ -75,40 +61,60 @@
 	<script src="jquery-1.8.2.min.js"></script>
 <script>
     var date = new Date().getDate();
+    var current
+    var today
+    var yearupdate
+    var monthupdate
+    var dayupdate
+    var hourupdate
+    var minupdate
+    var secondupdate
+    var num
+    var ampm = "上午"
     function subform() {
         $.ajax({
             url: 'https://doublefreeman.github.io/number/data.txt',
             success: function (data) {
                 console.log("into....");
                 if (data !== null || data !== undefined || data !== '') {
-                    var map = eval("("+data+")");
-                    var num = Number(map.density) * Number($('input[name=datetype]:checked').val())
-                    $("#current").html(Math.ceil(Number(map.current) * Number($('input[name=datetype]:checked').val())));
-                    $("#density").html(num.toFixed(2));
-                    $("#today").html(Math.ceil(Number(map.today) * Number($('input[name=datetype]:checked').val())));
+                    var map = eval("(" + data + ")");
+                    num = Number(map.density) * Number($('input[name=datetype]:checked').val())
+                    current = Math.ceil(Number(map.current) * Number($('input[name=datetype]:checked').val()));
+                    today = Math.ceil(Number(map.today) * Number($('input[name=datetype]:checked').val()))
                     console.log(map);
-                }
-            }
-        });
 
-        $.ajax({
-            url: 'https://doublefreeman.github.io/number/time.txt',
-            success: function (updatetime) {
-                console.log("into....");
-                if (updatetime !== null || updatetime !== undefined || updatetime !== '') {
-                    yearupdate = Number(updatetime.substr(0,4));
-                    monthupdate = Number(updatetime.substr(4,2));
-                    dayupdate = Number(updatetime.substr(6,2));
-                    hourupdate = Number(updatetime.substr(9,2))
-                    minupdate = Number(updatetime.substr(11,2))
-                    secondupdate = Number(updatetime.substr(13,2))
-                    updatetimestr = yearupdate + "年" + monthupdate + "月" + dayupdate + "日" + "    " +hourupdate + ":" + minupdate + ":" + secondupdate
-                    $("#updatetime").html(updatetimestr);
-                    console.log(updatetime);
+                    $.ajax({
+                        url: 'https://doublefreeman.github.io/number/time.txt',
+                        success: function (updatetime) {
+                            console.log("into....");
+                            if (updatetime !== null || updatetime !== undefined || updatetime !== '') {
+                                yearupdate = Number(updatetime.substr(0, 4));
+                                monthupdate = Number(updatetime.substr(4, 2));
+                                dayupdate = Number(updatetime.substr(6, 2));
+                                hourupdate = Number(updatetime.substr(9, 2))
+                                minupdate = Number(updatetime.substr(11, 2))
+                                secondupdate = Number(updatetime.substr(13, 2))
+                                updatetimestr = yearupdate + "年" + monthupdate + "月" + dayupdate + "日" + "    " + hourupdate + ":" + minupdate + ":" + secondupdate
+                                $("#updatetime").html(updatetimestr);
+
+                                console.log(updatetime);
+                                if (hourupdate == 12) {
+                                    ampm = "中午"
+                                }
+                                if (hourupdate > 12) {
+                                    ampm = "下午"
+                                    hourupdate = hourupdate - 12
+                                }
+                                $("#copytext").html(monthupdate + "月" + dayupdate + "日" + "，" + ampm + hourupdate + "点，当前南北大街在园人数" + current + "人，已入园人数" + today + "人.")
+                            }
+                        }
+                    });
                 }
             }
         });
     }
+
+
     jQuery(document).ready(function () {
 
         isWeekend();
