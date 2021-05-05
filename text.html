@@ -61,16 +61,25 @@
 	<script src="jquery-1.8.2.min.js"></script>
 <script>
     var date = new Date().getDate();
-    var current
-    var today
-    var yearupdate
-    var monthupdate
-    var dayupdate
-    var hourupdate
-    var minupdate
-    var secondupdate
-    var num
-    var ampm = "上午"
+    var current;
+    var today;
+    var yearupdate;
+    var monthupdate;
+    var dayupdate;
+    var hourupdate;
+    var minupdate;
+    var secondupdate;
+    var num;
+    var ampm = "上午";
+    function copy(str) {
+        var save = function (e) {
+            e.clipboardData.setData('text/plain', str);//clipboardData对象
+            e.preventDefault();//阻止默认行为
+        };
+        document.addEventListener('copy', save);
+        return document.execCommand("copy");//使文档处于可编辑状态，否则无效
+    }
+
     function subform() {
         $.ajax({
             url: 'https://doublefreeman.github.io/number/data.txt',
@@ -78,9 +87,9 @@
                 console.log("into....");
                 if (data !== null || data !== undefined || data !== '') {
                     var map = eval("(" + data + ")");
-                    num = Number(map.density) * Number($('input[name=datetype]:checked').val())
+                    num = Number(map.density) * Number($('input[name=datetype]:checked').val());
                     current = Math.ceil(Number(map.current) * Number($('input[name=datetype]:checked').val()));
-                    today = Math.ceil(Number(map.today) * Number($('input[name=datetype]:checked').val()))
+                    today = Math.ceil(Number(map.today) * Number($('input[name=datetype]:checked').val()));
                     console.log(map);
 
                     $.ajax({
@@ -91,21 +100,23 @@
                                 yearupdate = Number(updatetime.substr(0, 4));
                                 monthupdate = Number(updatetime.substr(4, 2));
                                 dayupdate = Number(updatetime.substr(6, 2));
-                                hourupdate = Number(updatetime.substr(9, 2))
-                                minupdate = Number(updatetime.substr(11, 2))
-                                secondupdate = Number(updatetime.substr(13, 2))
-                                updatetimestr = yearupdate + "年" + monthupdate + "月" + dayupdate + "日" + "    " + hourupdate + ":" + minupdate + ":" + secondupdate
+                                hourupdate = Number(updatetime.substr(9, 2));
+                                minupdate = Number(updatetime.substr(11, 2));
+                                secondupdate = Number(updatetime.substr(13, 2));
+                                updatetimestr = yearupdate + "年" + monthupdate + "月" + dayupdate + "日" + "    " + hourupdate + ":" + minupdate + ":" + secondupdate;
                                 $("#updatetime").html(updatetimestr);
 
                                 console.log(updatetime);
                                 if (hourupdate == 12) {
-                                    ampm = "中午"
+                                    ampm = "中午";
                                 }
                                 if (hourupdate > 12) {
-                                    ampm = "下午"
-                                    hourupdate = hourupdate - 12
+                                    ampm = "下午";
+                                    hourupdate = hourupdate - 12;
                                 }
-                                $("#copytext").html(monthupdate + "月" + dayupdate + "日" + "，" + ampm + hourupdate + "点，当前南北大街在园人数" + current + "人，已入园人数" + today + "人.")
+                                output = monthupdate + "月" + dayupdate + "日" + "，" + ampm + hourupdate + "点，当前南北大街在园人数" + current + "人，已入园人数" + today + "人.";
+                                $("#copytext").html(output)
+                                copy(output)
                             }
                         }
                     });
