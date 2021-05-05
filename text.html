@@ -25,13 +25,19 @@
     margin-top: 20px;
 }
 
+.copytext>input{
+    width: 450px;
+}
+
 </style>
 </head>
 
 <body>
 <div class="abc" id="text-align">
 	<div>
-        <div id="copytext">读取中...</div>
+        <form  class="copytext" action="#" method="post" onclick="gedatetype()">
+            <input type="text" name="copytext" value="读取中..." id="textinput" readonly/><br>
+        </form>
 
         <form  class="datetype" action="#" method="post" onclick="gedatetype()">
             日期类型：
@@ -72,12 +78,7 @@
     var num;
     var ampm = "上午";
     function copy(str) {
-        var save = function (e) {
-            e.clipboardData.setData('text/plain', str);//clipboardData对象
-            e.preventDefault();//阻止默认行为
-        };
-        document.addEventListener('copy', save);
-        return document.execCommand("copy");//使文档处于可编辑状态，否则无效
+        
     }
 
     function subform() {
@@ -103,20 +104,59 @@
                                 hourupdate = Number(updatetime.substr(9, 2));
                                 minupdate = Number(updatetime.substr(11, 2));
                                 secondupdate = Number(updatetime.substr(13, 2));
-                                updatetimestr = yearupdate + "年" + monthupdate + "月" + dayupdate + "日" + "    " + hourupdate + ":" + minupdate + ":" + secondupdate;
+                                var hourstr = "00";
+                                var minstr = "00";
+                                var secstr = "00";
+                                if (hourupdate != 0) {
+                                    hourstr = hourupdate;
+                                }
+                                if (minupdate != 0) {
+                                    minstr = minupdate;
+                                }
+                                if (secondupdate != 0) {
+                                    secstr = secondupdate;
+                                }
+                                updatetimestr = yearupdate + "年" + monthupdate + "月" + dayupdate + "日" + "    " + hourstr + ":" + minstr + ":" + secstr;
+
                                 $("#updatetime").html(updatetimestr);
 
                                 console.log(updatetime);
-                                if (hourupdate == 12) {
+                                var hourtemp;
+                                if (hourupdate != 24) {
+                                    hourtemp = hourupdate + 1;
+                                }
+                                if (hourtemp < 6 && hourtemp >= 0) {
+                                    ampm = "凌晨";
+                                }
+                                if (hourtemp < 9 && hourtemp >= 6) {
+                                    ampm = "早上";
+                                }
+                                if (hourtemp < 12 && hourtemp >= 9) {
+                                    ampm = "上午";
+                                }
+                                if (hourtemp == 12) {
                                     ampm = "中午";
                                 }
-                                if (hourupdate > 12) {
+                                if (hourtemp < 19 && hourtemp > 12) {
                                     ampm = "下午";
-                                    hourupdate = hourupdate - 12;
+                                    hourtemp = hourtemp - 12;
                                 }
-                                output = monthupdate + "月" + dayupdate + "日" + "，" + ampm + hourupdate + "点，当前南北大街在园人数" + current + "人，已入园人数" + today + "人.";
-                                $("#copytext").html(output)
-                                copy(output)
+
+                                if (hourtemp == 19) {
+                                    ampm = "傍晚";
+                                    hourtemp = hourtemp - 12;
+                                }
+
+                                if (hourtemp > 19) {
+                                    ampm = "晚上";
+                                    hourtemp = hourtemp - 12;
+                                }
+
+                                output = monthupdate + "月" + dayupdate + "日" + "，" + ampm + hourtemp + "点，当前南北大街在园人数" + current + "人，已入园人数" + today + "人.";
+                                document.getElementById("textinput").value = output;
+
+                                document.getElementById("textinput").select()
+                                document.execCommand("Copy")
                             }
                         }
                     });

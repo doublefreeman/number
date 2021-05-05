@@ -99,10 +99,22 @@
                     yearupdate = Number(updatetime.substr(0,4));
                     monthupdate = Number(updatetime.substr(4,2));
                     dayupdate = Number(updatetime.substr(6,2));
-                    hourupdate = Number(updatetime.substr(9,2))
-                    minupdate = Number(updatetime.substr(11,2))
-                    secondupdate = Number(updatetime.substr(13,2))
-                    updatetimestr = yearupdate + "年" + monthupdate + "月" + dayupdate + "日" + "    " +hourupdate + ":" + minupdate + ":" + secondupdate
+                    hourupdate = Number(updatetime.substr(9,2));
+                    minupdate = Number(updatetime.substr(11,2));
+                    secondupdate = Number(updatetime.substr(13,2));
+                    var hourstr = "00";
+                                var minstr = "00";
+                                var secstr = "00";
+                                if (hourupdate != 0) {
+                                    hourstr = hourupdate;
+                                }
+                                if (minupdate != 0) {
+                                    minstr = minupdate;
+                                }
+                                if (secondupdate != 0) {
+                                    secstr = secondupdate;
+                                }
+                                updatetimestr = yearupdate + "年" + monthupdate + "月" + dayupdate + "日" + "    " + hourstr + ":" + minstr + ":" + secstr;
                     $("#updatetime").html(updatetimestr);
                     console.log(updatetime);
                 }
