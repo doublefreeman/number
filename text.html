@@ -85,7 +85,9 @@
 
     function subform() {
         $.ajax({
-            url: 'https://doublefreeman.github.io/number/data.txt',
+
+            dataurl = 'https://doublefreeman.github.io/number/data.txt?ran=' + Math.random();
+            url: dataurl ,
             success: function (data) {
                 console.log("into....");
                 if (data !== null || data !== undefined || data !== '') {
@@ -95,8 +97,10 @@
                     today = Math.ceil(Number(map.today) * Number($('input[name=datetype]:checked').val()));
                     console.log(map);
 
+
                     $.ajax({
-                        url: 'https://doublefreeman.github.io/number/time.txt',
+                        timeurl = 'https://doublefreeman.github.io/number/time.txt?ran=' + Math.random();
+                        url: timeurl ,
                         success: function (updatetime) {
                             console.log("into....");
                             if (updatetime !== null || updatetime !== undefined || updatetime !== '') {
