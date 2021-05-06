@@ -77,10 +77,11 @@
 	<script src="jquery-1.8.2.min.js"></script>
 <script>
     var date = new Date().getDate();
+    var dataurl = "https://doublefreeman.github.io/number/data.txt?ran=" + Math.random();
     function subform() {
         $.ajax({
-            dataurl = 'https://doublefreeman.github.io/number/data.txt?ran=' + Math.random()；
-            url: dataurl ,
+            
+            url: dataurl,
             success: function (data) {
                 console.log("into....");
                 if (data !== null || data !== undefined || data !== '') {
@@ -94,8 +95,8 @@
             }
         });
 
+        var timeurl = 'https://doublefreeman.github.io/number/time.txt?ran=' + Math.random();
         $.ajax({
-            timeurl = 'https://doublefreeman.github.io/number/time.txt?ran=' + Math.random()；
             url: timeurl ,
             success: function (updatetime) {
                 console.log("into....");
