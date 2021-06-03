@@ -1,1 +1,1 @@
-{"yesterday":"9911","current":"247","color":"0","density":"0.04","today":"7502"}
+{"yesterday":"9911","current":"255","color":"0","density":"0.04","today":"7502"}
